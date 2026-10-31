@@ -34,14 +34,13 @@ export default async function FeatureStudios() {
             </p>
           </div>
           <Link
-            href="#all-studios"
+            href="explore-studios"
             className="flex w-fit items-center gap-4 border-b border-stone-800 pb-2 text-[13px] text-stone-900 transition-colors hover:border-[#df5232] hover:text-[#df5232]"
           >
             View all studios
             <ArrowRight className="size-4" strokeWidth={1.7} />
           </Link>
         </div>
-
         {featureStudios.length > 0 ? (
           <div className="mt-12 grid gap-7 lg:grid-cols-3">
             {featureStudios.map((studio) => (

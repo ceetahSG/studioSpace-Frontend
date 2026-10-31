@@ -40,10 +40,8 @@ const FeatureStudiosCard = ({ studio }: { studio: Studio }) => {
           </p>
           <span className="flex items-center gap-1 text-[12px] text-stone-500">
             <Star className="size-3.5 fill-[#df5232] text-[#df5232]" />
-            <strong className="font-medium text-stone-900">
-              {studio.rating.toFixed(1)}
-            </strong>
-            ({studio.reviewCount})
+            <strong className="font-medium text-stone-900"></strong>(
+            {studio.reviewCount})
           </span>
         </div>
         <h3 className="mt-3 text-xl tracking-[-0.04em] text-stone-900">

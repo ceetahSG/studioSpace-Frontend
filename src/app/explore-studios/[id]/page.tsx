@@ -36,7 +36,7 @@ export default async function StudioDetailsPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const response = await fetch(`http://localhost:5000/studio/${id}`);
+  const response = await fetch(`http://localhost:5000/studio/id/${id}`);
   const studioData: Studio = await response.json();
   console.log("Studio Data:", studioData);
 

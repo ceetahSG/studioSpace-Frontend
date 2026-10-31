@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import Hero from "@/components/Hero";
+import Category from "@/components/Category";
 import FeatureStudios from "@/components/FeatureStudios";
 import HowItWorks from "@/components/HowItWorks";
 import HostFeature from "@/components/HostFeature";
@@ -12,6 +13,7 @@ export default function Home() {
       <Suspense fallback={<FeaturedStudiosLoading />}>
         <FeatureStudios />
       </Suspense>
+      <Category />
       <HowItWorks />
       <HostFeature />
       <FinalCta />
