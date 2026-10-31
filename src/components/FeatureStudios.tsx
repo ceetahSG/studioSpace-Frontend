@@ -3,13 +3,14 @@ import Link from "next/link";
 import FeatureStudiosCard from "./FeatureStudiosCard";
 
 type Studio = {
+  _id: string;
   title: string;
   category: string;
   location: string;
   rating: number;
   reviewCount: number;
   hourlyRate: number;
-  imageUrl: string;
+  images?: string[];
 };
 
 export default async function FeatureStudios() {
@@ -44,10 +45,7 @@ export default async function FeatureStudios() {
         {featureStudios.length > 0 ? (
           <div className="mt-12 grid gap-7 lg:grid-cols-3">
             {featureStudios.map((studio) => (
-              <FeatureStudiosCard
-                key={`${studio.title}-${studio.location}`}
-                studio={studio}
-              />
+              <FeatureStudiosCard key={`${studio._id}`} studio={studio} />
             ))}
           </div>
         ) : (

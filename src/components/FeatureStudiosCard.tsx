@@ -1,14 +1,15 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowRight, Heart, MapPin, Star } from "lucide-react";
-type Studio = {
+export type Studio = {
+  _id: string;
   title: string;
   category: string;
   location: string;
   rating: number;
   reviewCount: number;
   hourlyRate: number;
-  imageUrl: string;
+  images?: string[];
 };
 
 const FeatureStudiosCard = ({ studio }: { studio: Studio }) => {
@@ -17,7 +18,11 @@ const FeatureStudiosCard = ({ studio }: { studio: Studio }) => {
       <div className="relative aspect-[1.35] overflow-hidden rounded-lg">
         <div
           className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-          style={{ backgroundImage: `url('${studio.imageUrl}')` }}
+          style={{
+            backgroundImage: studio.images?.[0]
+              ? `url('${studio.images[0]}')`
+              : undefined,
+          }}
         />
         <button
           type="button"
@@ -56,7 +61,7 @@ const FeatureStudiosCard = ({ studio }: { studio: Studio }) => {
             </span>
           </p>
           <Link
-            href={`#${studio.title.toLowerCase().replaceAll(" ", "-")}`}
+            href={`/explore-studios/${studio._id}`}
             className="flex items-center gap-2 text-[12px] text-stone-900 transition-colors hover:text-[#df5232]"
           >
             View details
