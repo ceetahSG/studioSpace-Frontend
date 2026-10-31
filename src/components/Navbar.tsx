@@ -1,5 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { Globe2, Moon } from "lucide-react";
+import ProfilePopover from "./ProfilePopover";
+import { authClient } from "@/lib/auth-client";
 
 const navigation = [
   { label: "Home", href: "/" },
@@ -9,6 +13,8 @@ const navigation = [
 ];
 
 export default function Navbar() {
+  const { data: session, isPending } = authClient.useSession();
+
   return (
     <header className="border-b border-stone-200/80 bg-stone-50">
       <div className="mx-auto flex h-17.5 max-w-330 items-center justify-between px-6 lg:px-8">
@@ -46,18 +52,28 @@ export default function Navbar() {
           >
             <Moon className="size-[18px]" strokeWidth={1.8} />
           </button>
-          <Link
-            href="/login"
-            className="text-stone-900 transition-colors hover:text-[#e55332]"
-          >
-            Log in
-          </Link>
-          <Link
-            href="/register"
-            className="rounded-lg bg-[#df5232] px-[18px] py-3 font-semibold text-white transition-colors hover:bg-[#c9472a]"
-          >
-            Register
-          </Link>
+          {!isPending && session?.user ? (
+            <>
+              <ProfilePopover
+                user={{ ...session.user, image: session.user.image ?? "" }}
+              />
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="text-stone-900 transition-colors hover:text-[#e55332]"
+              >
+                Log in
+              </Link>
+              <Link
+                href="/register"
+                className="rounded-lg bg-[#df5232] px-[18px] py-3 font-semibold text-white transition-colors hover:bg-[#c9472a]"
+              >
+                Register
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>

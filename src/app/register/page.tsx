@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { Check, Eye, EyeOff, Globe2 } from "lucide-react";
 import { FormEvent, useState } from "react";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 const studioImage =
   "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1400&q=90";
@@ -10,9 +12,26 @@ const studioImage =
 export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const userData = Object.fromEntries(formData.entries());
+    console.log("Form submitted:", userData);
+
+    const { data, error } = await authClient.signUp.email({
+      email: userData.email as string,
+      password: userData.password as string,
+      name: userData.fullName as string,
+      image: userData.photoUrl as string,
+    });
+    if (!error) {
+      console.log("User registered successfully:", data);
+      router.push("/");
+    } else {
+      return console.error("Error registering user:", error);
+    }
   }
 
   const passwordChecks = [
@@ -137,7 +156,9 @@ export default function RegisterPage() {
                     type="button"
                     onClick={() => setShowPassword((visible) => !visible)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 rounded p-1 text-stone-400 transition-colors hover:text-stone-700"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                   >
                     {showPassword ? (
                       <EyeOff className="size-[18px]" strokeWidth={1.7} />

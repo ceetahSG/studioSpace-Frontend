@@ -3,15 +3,31 @@
 import Link from "next/link";
 import { Eye, EyeOff, Globe2 } from "lucide-react";
 import { FormEvent, useState } from "react";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 const studioImage =
   "https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?auto=format&fit=crop&w=1400&q=90";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const userData = Object.fromEntries(formData.entries());
+
+    const { data, error } = await authClient.signIn.email({
+      email: userData.email as string,
+      password: userData.password as string,
+    });
+    if (error) {
+      return console.error("Error logging in user:", error);
+    } else {
+      console.log("User logged in successfully:", data);
+      router.push("/");
+    }
   }
 
   return (
