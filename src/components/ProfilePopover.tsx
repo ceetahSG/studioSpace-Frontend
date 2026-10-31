@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/popover";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 type ProfilePopoverProps = {
   user: {
@@ -36,13 +37,22 @@ const ProfilePopover = ({ user }: { user: ProfilePopoverProps["user"] }) => {
       <Popover>
         <PopoverTrigger
           render={
-            <Button variant="outline" className="w-fit">
-              {user.name}
-            </Button>
+            <div>
+              <div className="flex flex-row flex-wrap items-center gap-6 md:gap-12">
+                <Avatar>
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@shadcn"
+                    className="grayscale"
+                  />
+                </Avatar>
+              </div>
+            </div>
           }
         />
         <PopoverContent align="start">
           <PopoverHeader>
+            <PopoverTitle>{user.name}</PopoverTitle>
             <PopoverTitle>{user.email}</PopoverTitle>
             <Button
               variant="link"
