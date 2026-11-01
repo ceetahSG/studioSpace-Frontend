@@ -10,6 +10,9 @@ import {
   Star,
   Users,
 } from "lucide-react";
+import BookingPanel from "@/components/BookingPanel";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 type Studio = {
   _id: string;
@@ -38,7 +41,11 @@ export default async function StudioDetailsPage({
   const { id } = await params;
   const response = await fetch(`http://localhost:5000/studio/id/${id}`);
   const studioData: Studio = await response.json();
-  console.log("Studio Data:", studioData);
+  // console.log("Studio Data:", studioData);
+  const user = await auth.api.getSession({
+    headers: await headers(),
+  });
+  // console.log("User Data:", user?.user);
 
   return (
     <section className="bg-[#f7f5f1] text-stone-900">
@@ -214,22 +221,6 @@ export default async function StudioDetailsPage({
                 {studioData.rating.toFixed(1)} ({studioData.reviewCount})
               </span>
             </div>
-            <div className="mt-8 grid gap-4">
-              <label className="text-[11px] font-medium uppercase tracking-wide">
-                Date
-                <input
-                  type="date"
-                  className="mt-2 w-full rounded-md border border-stone-300 bg-[#f7f5f1] px-3 py-3 text-sm outline-none"
-                />
-              </label>
-              <label className="text-[11px] font-medium uppercase tracking-wide">
-                Guests
-                <select className="mt-2 w-full rounded-md border border-stone-300 bg-[#f7f5f1] px-3 py-3 text-sm outline-none">
-                  <option>1 guest</option>
-                  <option>{studioData.maxCapacity} guests</option>
-                </select>
-              </label>
-            </div>
             <div className="mt-7 space-y-4 border-y border-stone-200 py-5 text-sm text-stone-500">
               <div className="flex justify-between">
                 <span>Studio fee</span>
@@ -246,12 +237,7 @@ export default async function StudioDetailsPage({
                 </span>
               </div>
             </div>
-            <button
-              type="button"
-              className="mt-6 w-full rounded-lg bg-[#df5232] px-5 py-4 text-sm font-semibold text-white hover:bg-[#c9472a]"
-            >
-              Book workspace now
-            </button>
+            <BookingPanel user={user?.user} selectedStudio={studioData} />
             <p className="mt-4 flex items-center gap-2 text-[11px] text-stone-500">
               <ShieldCheck className="size-4" />
               Your card won&apos;t be charged until the host confirms.
