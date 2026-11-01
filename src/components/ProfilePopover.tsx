@@ -10,6 +10,7 @@ import {
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import Link from "next/link";
 
 type ProfilePopoverProps = {
   user: {
@@ -54,6 +55,13 @@ const ProfilePopover = ({ user }: { user: ProfilePopoverProps["user"] }) => {
           <PopoverHeader>
             <PopoverTitle>{user.name}</PopoverTitle>
             <PopoverTitle>{user.email}</PopoverTitle>
+            <Button>Dashboard</Button>
+            <Button>Add New Studio</Button>
+            <Button>My Studio Listing</Button>
+            <Link href="/my-bookings">
+              <Button>My Bookings</Button>
+            </Link>
+
             <Button
               variant="link"
               className="text-sm text-[#e55332]"

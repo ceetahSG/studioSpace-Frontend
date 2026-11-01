@@ -32,10 +32,11 @@ const BookDialog = ({
   selectedStudio,
   user,
 }: BookDialogProps) => {
-  console.log("User:", user?.email);
-  console.log("Selected Studio:", selectedStudio._id);
-  console.log("Selected Date:", selectedDate);
-  console.log("Guest Count:", guestCount);
+  // console.log("User:", user?.email);
+  // console.log("Selected Studio:", selectedStudio._id);
+  // console.log("Selected Date:", selectedDate);
+  // console.log("Guest Count:", guestCount);
+  // console.log("img:", selectedStudio.images?.[0]);
   const handleConfirmBooking = async () => {
     const res = await fetch("http://localhost:5000/booking", {
       method: "POST",
@@ -48,6 +49,7 @@ const BookDialog = ({
         date: selectedDate,
         guestCount: guestCount,
         studioId: selectedStudio._id,
+        img: selectedStudio.images?.[0] || "",
       }),
     });
     const resBody = await res.json();
