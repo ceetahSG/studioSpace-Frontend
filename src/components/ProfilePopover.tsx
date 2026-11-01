@@ -55,9 +55,15 @@ const ProfilePopover = ({ user }: { user: ProfilePopoverProps["user"] }) => {
           <PopoverHeader>
             <PopoverTitle>{user.name}</PopoverTitle>
             <PopoverTitle>{user.email}</PopoverTitle>
-            <Button>Dashboard</Button>
-            <Button>Add New Studio</Button>
-            <Button>My Studio Listing</Button>
+            <Link href="/">
+              <Button>Dashboard</Button>
+            </Link>
+            <Link href="/add-studio">
+              <Button>Add New Studio</Button>
+            </Link>
+            <Link href="/my-studios">
+              <Button>My Studio Listing</Button>
+            </Link>
             <Link href="/my-bookings">
               <Button>My Bookings</Button>
             </Link>
