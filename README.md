@@ -20,6 +20,28 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Google sign-in
+
+The authentication server uses Better Auth with MongoDB and Google OAuth. Add
+these variables to `.env.local`:
+
+```env
+MONGODB_URI=mongodb://...
+BETTER_AUTH_URL=http://localhost:3000
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+```
+
+In Google Cloud Console, create a Web OAuth client and add this authorized
+redirect URI:
+
+```text
+http://localhost:3000/api/auth/callback/google
+```
+
+For production, use the deployed site URL in `BETTER_AUTH_URL` and add its
+matching `/api/auth/callback/google` redirect URI in Google Cloud Console.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

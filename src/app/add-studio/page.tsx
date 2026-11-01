@@ -63,6 +63,7 @@ export default function AddStudioPage() {
     const userData = {
       ...Object.fromEntries(formData.entries()),
       amenities: formData.getAll("amenities"),
+      rating: 0.0,
     };
     console.log("Studio data to be published:", userData);
     const res = await fetch("http://localhost:5000/studios", {

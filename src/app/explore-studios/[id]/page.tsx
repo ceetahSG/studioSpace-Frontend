@@ -102,7 +102,7 @@ export default async function StudioDetailsPage({
         <div className="mt-9 grid h-[min(510px,55vw)] min-h-80 grid-cols-2 grid-rows-2 gap-1.5 overflow-hidden rounded-lg lg:grid-cols-[1.5fr_0.75fr_0.75fr]">
           <div
             className="row-span-2 bg-cover bg-center lg:col-span-1"
-            style={{ backgroundImage: `url('${studioData.images[0]}')` }}
+            style={{ backgroundImage: `url('${studioData.images[0] || ""}')` }}
           />
           {[1, 2, 3, 4].map((image) => (
             <div

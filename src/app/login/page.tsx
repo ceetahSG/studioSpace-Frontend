@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Eye, EyeOff, Globe2 } from "lucide-react";
 import { FormEvent, useState } from "react";
-import { authClient } from "@/lib/auth-client";
+import { authClient, signInWithGoogle } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
 const studioImage =
@@ -27,6 +27,14 @@ export default function LoginPage() {
     } else {
       console.log("User logged in successfully:", data);
       router.push("/");
+    }
+  }
+
+  async function handleGoogleSignIn() {
+    const { error } = await signInWithGoogle();
+
+    if (error) {
+      console.error("Error signing in with Google:", error);
     }
   }
 
@@ -154,6 +162,7 @@ export default function LoginPage() {
 
             <button
               type="button"
+              onClick={handleGoogleSignIn}
               className="flex h-12 w-full items-center justify-center gap-3 rounded-md border border-stone-200 text-[13px] font-medium text-stone-800 transition-colors hover:bg-stone-50"
             >
               <span className="text-[19px] font-semibold leading-none">G</span>
