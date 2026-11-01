@@ -4,6 +4,7 @@ import { type FormEvent, useState } from "react";
 import Link from "next/link";
 import { ArrowUp, Check, ChevronRight, Sparkles, Wifi } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
 
 const amenities = [
   "High-speed Wi-Fi",
@@ -78,6 +79,7 @@ export default function AddStudioPage() {
       return;
     }
     console.log("Studio published successfully:", await res.json());
+    redirect("/my-listing");
   };
 
   return (

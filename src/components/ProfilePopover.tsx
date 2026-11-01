@@ -61,7 +61,7 @@ const ProfilePopover = ({ user }: { user: ProfilePopoverProps["user"] }) => {
             <Link href="/add-studio">
               <Button>Add New Studio</Button>
             </Link>
-            <Link href="/my-studios">
+            <Link href="/my-listing">
               <Button>My Studio Listing</Button>
             </Link>
             <Link href="/my-bookings">
