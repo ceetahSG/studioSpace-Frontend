@@ -34,7 +34,7 @@ export default function AddStudioPage() {
   const [hourlyRate, setHourlyRate] = useState("45");
   const [securityDeposit, setSecurityDeposit] = useState("50");
   const [maximumCapacity, setMaximumCapacity] = useState("12");
-  const [imageLink, setImageLink] = useState("");
+  const [imageLinks, setImageLinks] = useState(["", "", "", "", ""]);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([
     "High-speed Wi-Fi",
     "Air conditioning",
@@ -61,10 +61,17 @@ export default function AddStudioPage() {
   const handlePublishStudio = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
+    const images = formData
+      .getAll("images")
+      .map((image) => String(image).trim())
+      .filter(Boolean);
     const userData = {
       ...Object.fromEntries(formData.entries()),
+      images,
       amenities: formData.getAll("amenities"),
       rating: 0.0,
+      status: "Available",
+      reviewCount: 0,
     };
     console.log("Studio data to be published:", userData);
     const res = await fetch("http://localhost:5000/studios", {
@@ -117,7 +124,7 @@ export default function AddStudioPage() {
             <div className="grid gap-6">
               <div className="grid gap-5 md:grid-cols-2">
                 <Field
-                  name="studioTitle"
+                  name="title"
                   label="Studio title"
                   placeholder="e.g. The White Room"
                   value={studioTitle}
@@ -134,7 +141,7 @@ export default function AddStudioPage() {
               <label className="text-xs font-medium text-stone-700">
                 Detailed description
                 <textarea
-                  name="description"
+                  name="overview"
                   value={description}
                   onChange={(event) => setDescription(event.target.value)}
                   className="mt-2 min-h-38 w-full resize-y rounded-md border border-stone-200 bg-[#faf9f6] p-4 text-sm leading-6 text-stone-700 outline-none"
@@ -154,7 +161,12 @@ export default function AddStudioPage() {
               description="Your exact address is only shared after a booking is confirmed."
             />
             <div className="grid gap-5 md:grid-cols-2">
-              <Field name="city" label="City" value={city} onChange={setCity} />
+              <Field
+                name="location"
+                label="City"
+                value={city}
+                onChange={setCity}
+              />
               <Field
                 name="address"
                 label="Full address"
@@ -185,7 +197,7 @@ export default function AddStudioPage() {
                 onChange={setSecurityDeposit}
               />
               <Field
-                name="maximumCapacity"
+                name="maxCapacity"
                 label="Maximum capacity"
                 value={maximumCapacity}
                 onChange={setMaximumCapacity}
@@ -199,20 +211,35 @@ export default function AddStudioPage() {
               title="Studio images"
               description="Listings with at least five high-quality images receive more bookings."
             />
-            <label className="text-xs font-medium text-stone-700">
-              Image link
-              <input
-                name="imageLink"
-                type="url"
-                value={imageLink}
-                onChange={(event) => setImageLink(event.target.value)}
-                placeholder="https://example.com/studio-image.jpg"
-                className={inputClass}
-              />
-              <span className="mt-2 block text-[11px] font-normal text-stone-500">
-                Paste a direct JPG or PNG image URL.
+            <div className="grid gap-4">
+              {imageLinks.map((imageLink, index) => (
+                <label
+                  key={`studio-image-${index + 1}`}
+                  className="text-xs font-medium text-stone-700"
+                >
+                  Image {index + 1}
+                  <input
+                    name="images"
+                    type="url"
+                    required={index === 0}
+                    value={imageLink}
+                    onChange={(event) =>
+                      setImageLinks((current) =>
+                        current.map((image, imageIndex) =>
+                          imageIndex === index ? event.target.value : image,
+                        ),
+                      )
+                    }
+                    placeholder="https://example.com/studio-image.jpg"
+                    className={inputClass}
+                  />
+                </label>
+              ))}
+              <span className="text-[11px] font-normal text-stone-500">
+                Add up to five direct JPG or PNG image URLs. The first image is
+                used as the listing cover.
               </span>
-            </label>
+            </div>
           </div>
 
           <div className={sectionClass}>
@@ -268,13 +295,13 @@ export default function AddStudioPage() {
             />
             <div className="grid gap-5 md:grid-cols-2">
               <Field
-                name="hostName"
+                name="ownerName"
                 label="Host name"
                 value={session?.user?.name || hostName}
                 onChange={setHostName}
               />
               <Field
-                name="hostEmail"
+                name="ownerEmail"
                 label="Host email"
                 value={session?.user?.email || hostEmail}
                 onChange={setHostEmail}

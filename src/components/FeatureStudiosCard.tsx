@@ -3,31 +3,36 @@ import Link from "next/link";
 import { ArrowRight, Heart, MapPin, Star } from "lucide-react";
 export type Studio = {
   _id: string;
-  title: string;
+  title?: string;
+  studioTitle?: string;
   category: string;
-  location: string;
-  rating: number;
-  reviewCount: number;
-  hourlyRate: number;
+  location?: string;
+  city?: string;
+  rating?: number;
+  reviewCount?: number;
+  hourlyRate?: number | string;
   images?: string[];
+  imageLink?: string;
 };
 
 const FeatureStudiosCard = ({ studio }: { studio: Studio }) => {
+  const title = studio.title || studio.studioTitle || "Untitled studio";
+  const location = studio.location || studio.city || "Location unavailable";
+  const image = studio.images?.[0] || studio.imageLink;
+
   return (
     <article className="group">
       <div className="relative aspect-[1.35] overflow-hidden rounded-lg">
         <div
           className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
           style={{
-            backgroundImage: studio.images?.[0]
-              ? `url('${studio.images[0]}')`
-              : undefined,
+            backgroundImage: image ? `url('${image}')` : undefined,
           }}
         />
         <button
           type="button"
           className="absolute right-3 top-3 flex size-10 items-center justify-center rounded-full bg-white text-[#df5232] transition-colors hover:bg-[#df5232] hover:text-white"
-          aria-label={`Save ${studio.title}`}
+          aria-label={`Save ${title}`}
         >
           <Heart className="size-5" fill="currentColor" strokeWidth={1.5} />
         </button>
@@ -40,20 +45,22 @@ const FeatureStudiosCard = ({ studio }: { studio: Studio }) => {
           </p>
           <span className="flex items-center gap-1 text-[12px] text-stone-500">
             <Star className="size-3.5 fill-[#df5232] text-[#df5232]" />
-            <strong className="font-medium text-stone-900"></strong>(
-            {studio.reviewCount})
+            <strong className="font-medium text-stone-900">
+              {studio.rating ?? 0}
+            </strong>{" "}
+            ({studio.reviewCount ?? 0})
           </span>
         </div>
         <h3 className="mt-3 text-xl tracking-[-0.04em] text-stone-900">
-          {studio.title}
+          {title}
         </h3>
         <p className="mt-2 flex items-center gap-1.5 text-[13px] text-stone-500">
           <MapPin className="size-4" strokeWidth={1.5} />
-          {studio.location}
+          {location}
         </p>
         <div className="mt-4 flex items-center justify-between border-t border-stone-300 pt-4">
           <p className="text-[16px] font-medium text-stone-900">
-            ${studio.hourlyRate}{" "}
+            ${studio.hourlyRate ?? 0}{" "}
             <span className="text-[12px] font-normal text-stone-500">
               / hour
             </span>

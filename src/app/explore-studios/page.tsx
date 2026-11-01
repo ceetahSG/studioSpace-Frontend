@@ -63,8 +63,12 @@ export default async function ExploreStudiosPage() {
           <div className="mt-8 grid gap-x-7 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
             {Studios.map((studio: Studio) => (
               <FeatureStudiosCard
-                key={`${studio.title}-${studio.location}`}
-                studio={studio}
+                key={studio._id}
+                studio={{
+                  ...studio,
+                  title: studio.title || studio.studioTitle,
+                  location: studio.location || studio.city,
+                }}
               />
             ))}
           </div>

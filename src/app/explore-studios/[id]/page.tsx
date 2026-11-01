@@ -40,7 +40,30 @@ export default async function StudioDetailsPage({
 }) {
   const { id } = await params;
   const response = await fetch(`http://localhost:5000/studio/id/${id}`);
-  const studioData: Studio = await response.json();
+  if (!response.ok) {
+    throw new Error(`Unable to load studio ${id}.`);
+  }
+
+  const rawStudio = await response.json();
+  const studioData: Studio = {
+    ...rawStudio,
+    title: rawStudio.title || rawStudio.studioTitle || "Untitled studio",
+    location: rawStudio.location || rawStudio.city || "Location unavailable",
+    overview:
+      rawStudio.overview ||
+      rawStudio.description ||
+      "No overview is available for this studio.",
+    maxCapacity: Number(rawStudio.maxCapacity ?? rawStudio.maximumCapacity) || 0,
+    ownerName: rawStudio.ownerName || rawStudio.hostName || "Studio host",
+    ownerEmail: rawStudio.ownerEmail || rawStudio.hostEmail || "",
+    images: Array.isArray(rawStudio.images)
+      ? rawStudio.images
+      : rawStudio.imageLink
+        ? [rawStudio.imageLink]
+        : [],
+    rating: Number(rawStudio.rating) || 0,
+    reviewCount: Number(rawStudio.reviewCount) || 0,
+  };
   // console.log("Studio Data:", studioData);
   const user = await auth.api.getSession({
     headers: await headers(),
