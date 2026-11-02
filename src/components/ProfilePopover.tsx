@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { useState } from "react";
+import { useToastManager } from "@/components/ui/toast";
 
 type ProfilePopoverProps = {
   user: {
@@ -24,16 +25,27 @@ type ProfilePopoverProps = {
 const ProfilePopover = ({ user }: { user: ProfilePopoverProps["user"] }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const toastManager = useToastManager();
 
   const handleLogout = async () => {
     setOpen(false);
     const { error } = await authClient.signOut();
 
     if (error) {
+      toastManager.add({
+        title: "Logout failed",
+        description: error.message || "Please try again.",
+        type: "error",
+      });
       console.error("Error logging out user:", error);
       return;
     }
 
+    toastManager.add({
+      title: "Signed out",
+      description: "You have been safely signed out.",
+      type: "success",
+    });
     router.push("/");
   };
   return (

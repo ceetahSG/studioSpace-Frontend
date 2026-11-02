@@ -5,6 +5,7 @@ import { ArrowUp, Check, ChevronRight, Sparkles, Wifi } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import getTokenFromClient from "@/lib/getTokenFromClient";
 import { redirect } from "next/navigation";
+import { useToastManager } from "@/components/ui/toast";
 
 const amenities = [
   "High-speed Wi-Fi",
@@ -43,6 +44,7 @@ export default function EditStudioForm({ studio }: { studio: any }) {
   const [rating, setRating] = useState(studio.rating);
   const [hostName, setHostName] = useState(studio.hostName);
   const [hostEmail, setHostEmail] = useState(studio.hostEmail);
+  const toastManager = useToastManager();
 
   const toggleAmenity = (amenity: string) => {
     setSelectedAmenities((current) =>
@@ -77,10 +79,21 @@ export default function EditStudioForm({ studio }: { studio: any }) {
       body: JSON.stringify(userData),
     });
     if (!res.ok) {
+      if (error && typeof error === "object" && "digest" in error) throw error;
+      toastManager.add({
+        title: "Update failed",
+        description: "The studio could not be updated. Please try again.",
+        type: "error",
+      });
       console.error("Error publishing studio:", res);
       return;
     }
     console.log("Studio Edited successfully:", await res.json());
+    toastManager.add({
+      title: "Studio updated",
+      description: "Your listing changes have been saved.",
+      type: "success",
+    });
     redirect("/my-listing");
   };
 

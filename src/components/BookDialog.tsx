@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Info } from "lucide-react";
+import { useToastManager } from "@/components/ui/toast";
 
 interface BookDialogProps {
   open: boolean;
@@ -32,13 +33,15 @@ const BookDialog = ({
   selectedStudio,
   user,
 }: BookDialogProps) => {
+  const toastManager = useToastManager();
   // console.log("User:", user?.email);
   // console.log("Selected Studio:", selectedStudio._id);
   // console.log("Selected Date:", selectedDate);
   // console.log("Guest Count:", guestCount);
   // console.log("img:", selectedStudio.images?.[0]);
   const handleConfirmBooking = async () => {
-    const res = await fetch("http://localhost:5000/booking", {
+    try {
+      const res = await fetch("http://localhost:5000/booking", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -51,14 +54,23 @@ const BookDialog = ({
         studioId: selectedStudio._id,
         img: selectedStudio.images?.[0] || "",
       }),
-    });
-    const resBody = await res.json();
-    console.log("Booking response:", resBody);
-    if (res.ok) {
-      console.log("Booking confirmed!");
+      });
+      if (!res.ok) {
+        throw new Error("The booking request could not be completed.");
+      }
+      toastManager.add({
+        title: "Booking requested",
+        description: "The host will review your request shortly.",
+        type: "success",
+      });
       onOpenChange(false);
-    } else {
-      console.error("Failed to confirm booking.");
+    } catch (error) {
+      toastManager.add({
+        title: "Booking failed",
+        description: error instanceof Error ? error.message : "Please try again.",
+        type: "error",
+      });
+      console.error("Failed to confirm booking:", error);
     }
   };
 

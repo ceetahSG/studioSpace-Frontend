@@ -1,5 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, Globe2 } from "lucide-react";
+import { FormEvent } from "react";
+import { useToastManager } from "@/components/ui/toast";
 
 const exploreLinks = [
   { label: "All studios", href: "#explore" },
@@ -22,6 +26,18 @@ const legalLinks = [
 ];
 
 export default function Footer() {
+  const toastManager = useToastManager();
+
+  function handleSubscribe(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    event.currentTarget.reset();
+    toastManager.add({
+      title: "You're subscribed",
+      description: "We'll keep you posted on new spaces and stories.",
+      type: "success",
+    });
+  }
+
   return (
     <footer className="bg-[#151715] text-stone-300">
       <div className="mx-auto max-w-330 px-6 pb-7 pt-12 lg:px-8 lg:pt-14">
@@ -62,7 +78,10 @@ export default function Footer() {
             <p className="mt-5 text-[13px] leading-5 text-stone-500">
               New spaces, creative stories, and city guides.
             </p>
-            <form className="mt-3 flex items-center border-b border-stone-600">
+            <form
+              className="mt-3 flex items-center border-b border-stone-600"
+              onSubmit={handleSubscribe}
+            >
               <label htmlFor="footer-email" className="sr-only">
                 Email address
               </label>

@@ -1,24 +1,38 @@
 "use client";
+
 import getTokenFromClient from "@/lib/getTokenFromClient";
 import { Trash2 } from "lucide-react";
 import { redirect } from "next/navigation";
+import { useToastManager } from "@/components/ui/toast";
 
 const DeleteListing = ({ studioId }: { studioId: string }) => {
+  const toastManager = useToastManager();
+
   const handleDelete = async () => {
-    const token = await getTokenFromClient();
-    const response = await fetch(`http://localhost:5000/studios/${studioId}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (!response.ok) {
-      console.error("Failed to delete listing");
-      return;
-    } else {
+    try {
+      const token = await getTokenFromClient();
+      const response = await fetch(`http://localhost:5000/studios/${studioId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!response.ok) throw new Error("The listing could not be deleted.");
+      toastManager.add({
+        title: "Listing deleted",
+        description: "Your studio listing has been removed.",
+        type: "success",
+      });
       redirect("/my-listing");
+    } catch (error) {
+      if (error && typeof error === "object" && "digest" in error) throw error;
+      toastManager.add({
+        title: "Delete failed",
+        description: error instanceof Error ? error.message : "Please try again.",
+        type: "error",
+      });
+      console.error("Failed to delete listing:", error);
     }
   };
+
   return (
     <div>
       <button

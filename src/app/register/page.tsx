@@ -5,6 +5,7 @@ import { Check, Eye, EyeOff, Globe2 } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { authClient, signInWithGoogle } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { useToastManager } from "@/components/ui/toast";
 
 const studioImage =
   "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1400&q=90";
@@ -13,6 +14,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const toastManager = useToastManager();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -27,9 +29,18 @@ export default function RegisterPage() {
       image: userData.photoUrl as string,
     });
     if (!error) {
-      console.log("User registered successfully:", data);
+      toastManager.add({
+        title: "Account created",
+        description: "Welcome to StudioSpace.",
+        type: "success",
+      });
       router.push("/");
     } else {
+      toastManager.add({
+        title: "Unable to create account",
+        description: error.message || "Please check your details and try again.",
+        type: "error",
+      });
       return console.error("Error registering user:", error);
     }
   }
@@ -38,7 +49,18 @@ export default function RegisterPage() {
     const { error } = await signInWithGoogle();
 
     if (error) {
+      toastManager.add({
+        title: "Google sign-up failed",
+        description: error.message || "Please try again.",
+        type: "error",
+      });
       console.error("Error signing in with Google:", error);
+    } else {
+      toastManager.add({
+        title: "Welcome to StudioSpace",
+        description: "Your account is ready.",
+        type: "success",
+      });
     }
   }
 

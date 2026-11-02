@@ -106,7 +106,7 @@ export default async function MyListingPage() {
 
               {listings.map((listing: Listing) => (
                 <div
-                  key={listing.studioTitle}
+                  key={listing._id}
                   className="grid grid-cols-[minmax(330px,1.8fr)_minmax(180px,1fr)_minmax(115px,.65fr)_minmax(115px,.65fr)_125px] items-center border-b border-[#deddd7] px-5 py-3.5 text-[11px] last:border-b-0"
                 >
                   <div className="flex items-center gap-3">

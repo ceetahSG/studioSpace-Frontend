@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CalendarDays, Camera, MapPin, Search } from "lucide-react";
+import { useToastManager } from "@/components/ui/toast";
 
 const studioTypes = [
   { label: "Photo Studio", value: "Photo Studio" },
@@ -15,9 +16,15 @@ const studioTypes = [
 export default function SearchCategory() {
   const router = useRouter();
   const [studioType, setStudioType] = useState(studioTypes[0].value);
+  const toastManager = useToastManager();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    toastManager.add({
+      title: "Searching studios",
+      description: `Showing ${studioType.toLowerCase()} spaces.`,
+      type: "info",
+    });
     router.push(`/filteredstudios/${encodeURIComponent(studioType)}`);
   }
 

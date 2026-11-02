@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowUp, Check, ChevronRight, Sparkles, Wifi } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
+import { useToastManager } from "@/components/ui/toast";
 
 const amenities = [
   "High-speed Wi-Fi",
@@ -43,6 +44,7 @@ export default function AddStudioPage() {
   ]);
   const [hostName, setHostName] = useState("Nadia Shah");
   const [hostEmail, setHostEmail] = useState("nadia@studio.space");
+  const toastManager = useToastManager();
 
   const toggleAmenity = (amenity: string) => {
     setSelectedAmenities((current) =>
@@ -74,19 +76,28 @@ export default function AddStudioPage() {
       reviewCount: 0,
     };
     console.log("Studio data to be published:", userData);
-    const res = await fetch("http://localhost:5000/studios", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    });
-    if (!res.ok) {
-      console.error("Error publishing studio:", res);
-      return;
+    try {
+      const res = await fetch("http://localhost:5000/studios", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      });
+      if (!res.ok) throw new Error("The studio could not be published.");
+      toastManager.add({
+        title: "Studio published",
+        description: "Your listing is now available to creators.",
+        type: "success",
+      });
+      redirect("/my-listing");
+    } catch (error) {
+      if (error && typeof error === "object" && "digest" in error) throw error;
+      toastManager.add({
+        title: "Publishing failed",
+        description: error instanceof Error ? error.message : "Please try again.",
+        type: "error",
+      });
+      console.error("Error publishing studio:", error);
     }
-    console.log("Studio published successfully:", await res.json());
-    redirect("/my-listing");
   };
 
   return (

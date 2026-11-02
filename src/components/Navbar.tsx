@@ -5,6 +5,7 @@ import { Globe2, Moon, Sun } from "lucide-react";
 import ProfilePopover from "./ProfilePopover";
 import { authClient } from "@/lib/auth-client";
 import { useEffect, useState } from "react";
+import { useToastManager } from "@/components/ui/toast";
 
 const navigation = [
   { label: "Home", href: "/" },
@@ -16,6 +17,7 @@ const navigation = [
 export default function Navbar() {
   const { data: session, isPending } = authClient.useSession();
   const [isDark, setIsDark] = useState(false);
+  const toastManager = useToastManager();
 
   useEffect(() => {
     const storedTheme = window.localStorage.getItem("theme");
@@ -32,6 +34,11 @@ export default function Navbar() {
     setIsDark(nextIsDark);
     document.documentElement.classList.toggle("dark", nextIsDark);
     window.localStorage.setItem("theme", nextIsDark ? "dark" : "light");
+    toastManager.add({
+      title: nextIsDark ? "Dark mode enabled" : "Light mode enabled",
+      description: "Your theme preference has been saved.",
+      type: "success",
+    });
   };
 
   return (

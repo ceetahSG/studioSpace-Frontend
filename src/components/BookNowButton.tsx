@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import BookDialog from "./BookDialog";
+import { useToastManager } from "@/components/ui/toast";
 interface BookNowButtonProps {
   user?: {
     name: string;
@@ -20,12 +21,25 @@ const BookNowButton = ({
   guestCount,
 }: BookNowButtonProps) => {
   const [dialogOpen, setDialogOpen] = React.useState(false);
+  const toastManager = useToastManager();
 
   const handleBookNow = () => {
-    // console.log("User:", user?.email);
-    // console.log("Selected Studio:", selectedStudio);
-    // console.log("Selected Date:", selectedDate);
-    // console.log("Guest Count:", guestCount);
+    if (!user?.email) {
+      toastManager.add({
+        title: "Sign in to book",
+        description: "Please sign in before requesting a workspace.",
+        type: "warning",
+      });
+      return;
+    }
+    if (!selectedDate) {
+      toastManager.add({
+        title: "Choose a date",
+        description: "Select a booking date before continuing.",
+        type: "warning",
+      });
+      return;
+    }
     setDialogOpen(true);
   };
 
