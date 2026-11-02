@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Globe2, Moon } from "lucide-react";
+import { Globe2, Moon, Sun } from "lucide-react";
 import ProfilePopover from "./ProfilePopover";
 import { authClient } from "@/lib/auth-client";
+import { useEffect, useState } from "react";
 
 const navigation = [
   { label: "Home", href: "/" },
@@ -14,9 +15,27 @@ const navigation = [
 
 export default function Navbar() {
   const { data: session, isPending } = authClient.useSession();
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const storedTheme = window.localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const shouldUseDark = storedTheme === "dark" || (!storedTheme && prefersDark);
+
+    setIsDark(shouldUseDark);
+    document.documentElement.classList.toggle("dark", shouldUseDark);
+  }, []);
+
+  const toggleTheme = () => {
+    const nextIsDark = !isDark;
+
+    setIsDark(nextIsDark);
+    document.documentElement.classList.toggle("dark", nextIsDark);
+    window.localStorage.setItem("theme", nextIsDark ? "dark" : "light");
+  };
 
   return (
-    <header className="border-b border-stone-200/80 bg-stone-50">
+    <header className="border-b border-stone-200/80 bg-stone-50 dark:border-stone-800 dark:bg-[#151715]">
       <div className="mx-auto flex h-17.5 max-w-330 items-center justify-between px-6 lg:px-8">
         <Link
           href="/"
@@ -47,10 +66,17 @@ export default function Navbar() {
         <div className="flex items-center gap-5 text-[13px]">
           <button
             type="button"
-            className="rounded-full p-1 text-stone-900 transition-colors hover:bg-stone-200"
-            aria-label="Toggle dark mode"
+            className="rounded-full p-1 text-stone-900 transition-colors hover:bg-stone-200 dark:text-stone-200 dark:hover:bg-stone-800"
+            aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            aria-pressed={isDark}
+            title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            onClick={toggleTheme}
           >
-            <Moon className="size-[18px]" strokeWidth={1.8} />
+            {isDark ? (
+              <Sun className="size-[18px]" strokeWidth={1.8} />
+            ) : (
+              <Moon className="size-[18px]" strokeWidth={1.8} />
+            )}
           </button>
           {!isPending && session?.user ? (
             <>

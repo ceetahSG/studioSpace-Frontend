@@ -11,6 +11,7 @@ import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
+import { useState } from "react";
 
 type ProfilePopoverProps = {
   user: {
@@ -22,8 +23,10 @@ type ProfilePopoverProps = {
 
 const ProfilePopover = ({ user }: { user: ProfilePopoverProps["user"] }) => {
   const router = useRouter();
+  const [open, setOpen] = useState(false);
 
   const handleLogout = async () => {
+    setOpen(false);
     const { error } = await authClient.signOut();
 
     if (error) {
@@ -35,42 +38,67 @@ const ProfilePopover = ({ user }: { user: ProfilePopoverProps["user"] }) => {
   };
   return (
     <div>
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger
           render={
-            <div>
-              <div className="flex flex-row flex-wrap items-center gap-6 md:gap-12">
-                <Avatar>
-                  <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt="@shadcn"
-                    className="grayscale"
-                  />
-                </Avatar>
-              </div>
-            </div>
+            <button
+              type="button"
+              className="flex flex-row flex-wrap items-center gap-6 md:gap-12"
+              aria-label="Open profile menu"
+            >
+              <Avatar>
+                <AvatarImage src={user.image} alt={user.name} />
+              </Avatar>
+            </button>
           }
         />
-        <PopoverContent align="start">
-          <PopoverHeader>
-            <PopoverTitle>{user.name}</PopoverTitle>
-            <PopoverTitle>{user.email}</PopoverTitle>
-            <Link href="/">
-              <Button>Dashboard</Button>
-            </Link>
-            <Link href="/add-studio">
-              <Button>Add New Studio</Button>
-            </Link>
-            <Link href="/my-listing">
-              <Button>My Studio Listing</Button>
-            </Link>
-            <Link href="/my-bookings">
-              <Button>My Bookings</Button>
-            </Link>
-
+        <PopoverContent
+          align="end"
+          className="w-64 border-stone-200 bg-[#fbfaf7] p-2"
+        >
+          <PopoverHeader className="gap-1">
+            <div className="border-b border-stone-200 px-3 pb-3">
+              <PopoverTitle className="text-sm font-semibold text-stone-900">
+                {user.name}
+              </PopoverTitle>
+              <p className="mt-1 truncate text-xs text-stone-500">
+                {user.email}
+              </p>
+            </div>
+            <nav className="grid gap-1 pt-1" aria-label="Profile menu">
+              <Link
+                href="/"
+                onClick={() => setOpen(false)}
+                className="flex h-9 items-center rounded-md px-3 text-[13px] text-stone-700 transition-colors hover:bg-[#f1eee8] hover:text-stone-900"
+              >
+                Dashboard
+              </Link>
+              <Link
+                href="/add-studio"
+                onClick={() => setOpen(false)}
+                className="flex h-9 items-center rounded-md px-3 text-[13px] text-stone-700 transition-colors hover:bg-[#f1eee8] hover:text-stone-900"
+              >
+                Add New Studio
+              </Link>
+              <Link
+                href="/my-listing"
+                onClick={() => setOpen(false)}
+                className="flex h-9 items-center rounded-md px-3 text-[13px] text-stone-700 transition-colors hover:bg-[#f1eee8] hover:text-stone-900"
+              >
+                My Studio Listing
+              </Link>
+              <Link
+                href="/my-bookings"
+                onClick={() => setOpen(false)}
+                className="flex h-9 items-center rounded-md px-3 text-[13px] text-stone-700 transition-colors hover:bg-[#f1eee8] hover:text-stone-900"
+              >
+                My Bookings
+              </Link>
+            </nav>
             <Button
-              variant="link"
-              className="text-sm text-[#e55332]"
+              type="button"
+              variant="ghost"
+              className="mt-1 h-9 w-full justify-start rounded-md px-3 text-[13px] font-medium text-[#df5232] hover:bg-[#fdf0eb] hover:text-[#c9472a]"
               onClick={handleLogout}
             >
               Logout

@@ -29,13 +29,6 @@ const FeatureStudiosCard = ({ studio }: { studio: Studio }) => {
             backgroundImage: image ? `url('${image}')` : undefined,
           }}
         />
-        <button
-          type="button"
-          className="absolute right-3 top-3 flex size-10 items-center justify-center rounded-full bg-white text-[#df5232] transition-colors hover:bg-[#df5232] hover:text-white"
-          aria-label={`Save ${title}`}
-        >
-          <Heart className="size-5" fill="currentColor" strokeWidth={1.5} />
-        </button>
       </div>
 
       <div className="mt-5">
