@@ -41,19 +41,19 @@ const BookDialog = ({
   // console.log("img:", selectedStudio.images?.[0]);
   const handleConfirmBooking = async () => {
     try {
-      const res = await fetch("http://localhost:5000/booking", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userEmail: user?.email,
-        studioTitle: selectedStudio.title,
-        date: selectedDate,
-        guestCount: guestCount,
-        studioId: selectedStudio._id,
-        img: selectedStudio.images?.[0] || "",
-      }),
+      const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/booking", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userEmail: user?.email,
+          studioTitle: selectedStudio.title,
+          date: selectedDate,
+          guestCount: guestCount,
+          studioId: selectedStudio._id,
+          img: selectedStudio.images?.[0] || "",
+        }),
       });
       if (!res.ok) {
         throw new Error("The booking request could not be completed.");
@@ -67,10 +67,11 @@ const BookDialog = ({
     } catch (error) {
       toastManager.add({
         title: "Booking failed",
-        description: error instanceof Error ? error.message : "Please try again.",
+        description:
+          error instanceof Error ? error.message : "Please try again.",
         type: "error",
       });
-      console.error("Failed to confirm booking:", error);
+      // console.error("Failed to confirm booking:", error);
     }
   };
 

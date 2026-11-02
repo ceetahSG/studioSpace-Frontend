@@ -75,9 +75,9 @@ export default function AddStudioPage() {
       status: "Available",
       reviewCount: 0,
     };
-    console.log("Studio data to be published:", userData);
+    // console.log("Studio data to be published:", userData);
     try {
-      const res = await fetch("http://localhost:5000/studios", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/studios`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
@@ -93,7 +93,8 @@ export default function AddStudioPage() {
       if (error && typeof error === "object" && "digest" in error) throw error;
       toastManager.add({
         title: "Publishing failed",
-        description: error instanceof Error ? error.message : "Please try again.",
+        description:
+          error instanceof Error ? error.message : "Please try again.",
         type: "error",
       });
       console.error("Error publishing studio:", error);

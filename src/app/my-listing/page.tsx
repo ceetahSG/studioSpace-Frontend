@@ -33,11 +33,14 @@ export default async function MyListingPage() {
 
   const token = await getTokenFromServer();
 
-  const res = await fetch(`http://localhost:5000/studios/${userData?.email}`, {
-    headers: {
-      Authorization: `Bearer ${token.token}`,
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/studios/${userData?.email}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token.token}`,
+      },
     },
-  });
+  );
   const listings = await res.json();
   // console.log("listings", listings[0].images[0]);
 

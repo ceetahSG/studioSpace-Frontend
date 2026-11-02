@@ -22,8 +22,26 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.className} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${inter.className} h-full antialiased`}
+      suppressHydrationWarning
+    >
       <body className="min-h-full flex flex-col">
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (() => {
+                const storedTheme = localStorage.getItem("theme");
+                const shouldUseDark =
+                  storedTheme === "dark" ||
+                  (!storedTheme &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches);
+                document.documentElement.classList.toggle("dark", shouldUseDark);
+              })();
+            `,
+          }}
+        />
         <Toaster>
           <Navbar />
           <main className="flex-1">{children}</main>

@@ -26,6 +26,17 @@ export default function Navbar() {
 
     setIsDark(shouldUseDark);
     document.documentElement.classList.toggle("dark", shouldUseDark);
+
+    if (!storedTheme) {
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      const handleSystemThemeChange = (event: MediaQueryListEvent) => {
+        setIsDark(event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      };
+
+      mediaQuery.addEventListener("change", handleSystemThemeChange);
+      return () => mediaQuery.removeEventListener("change", handleSystemThemeChange);
+    }
   }, []);
 
   const toggleTheme = () => {

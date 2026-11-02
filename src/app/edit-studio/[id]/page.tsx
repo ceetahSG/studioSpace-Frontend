@@ -6,7 +6,9 @@ export default async function EditStudioPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const data = await fetch(`http://localhost:5000/studio/id/${id}`);
+  const data = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/studio/id/${id}`,
+  );
   const studio = await data.json();
   console.log("Fetched studio data:", studio);
 

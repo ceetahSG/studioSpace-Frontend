@@ -56,7 +56,7 @@ export default async function MyBookingPage() {
     headers: await headers(),
   });
   const res = await fetch(
-    `http://localhost:5000/bookings/${session?.user?.email}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/bookings/${session?.user?.email}`,
   );
   const bookingData = await res.json();
   console.log("Bookings Data:", bookingData);

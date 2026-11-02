@@ -10,9 +10,11 @@ export default async function FilteredStudiosPage({
   params: Promise<{ category: string }>;
 }) {
   const { category } = await params;
-  console.log("Category:", category);
+  // console.log("Category:", category);
 
-  const res = await fetch(`http://localhost:5000/studio/${category}`);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/studio/${category}`,
+  );
   const Studios = await res.json();
   console.log("Studios:", Studios);
   <section className="bg-[#f7f5f1] px-6 py-24 lg:px-8 lg:py-32">

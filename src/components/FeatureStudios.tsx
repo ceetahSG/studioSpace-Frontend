@@ -14,7 +14,9 @@ type Studio = {
 };
 
 export default async function FeatureStudios() {
-  const res = await fetch("http://localhost:5000/featured-studios");
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/featured-studios`,
+  );
   const featureStudios: Studio[] = await res.json();
 
   return (

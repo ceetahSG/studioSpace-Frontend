@@ -11,10 +11,13 @@ const DeleteListing = ({ studioId }: { studioId: string }) => {
   const handleDelete = async () => {
     try {
       const token = await getTokenFromClient();
-      const response = await fetch(`http://localhost:5000/studios/${studioId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/studios/${studioId}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       if (!response.ok) throw new Error("The listing could not be deleted.");
       toastManager.add({
         title: "Listing deleted",
@@ -26,7 +29,8 @@ const DeleteListing = ({ studioId }: { studioId: string }) => {
       if (error && typeof error === "object" && "digest" in error) throw error;
       toastManager.add({
         title: "Delete failed",
-        description: error instanceof Error ? error.message : "Please try again.",
+        description:
+          error instanceof Error ? error.message : "Please try again.",
         type: "error",
       });
       console.error("Failed to delete listing:", error);

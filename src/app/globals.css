@@ -79,6 +79,7 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.708 0 0);
+    color-scheme: light;
 }
 
 .dark {
@@ -113,6 +114,7 @@
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.556 0 0);
+    color-scheme: dark;
 }
 
 @layer base {
@@ -121,6 +123,7 @@
     }
   body {
     @apply bg-background text-foreground;
+    transition: background-color 200ms ease, color 200ms ease;
     }
   html {
     @apply font-sans;
@@ -145,7 +148,13 @@
 
   .dark [class*="bg-[#efeee9]"],
   .dark [class*="bg-[#f1eee8]"],
-  .dark [class*="bg-[#e7f1ee]"] {
+  .dark [class*="bg-[#e7f1ee]"],
+  .dark [class*="bg-[#f1f0eb]"],
+  .dark [class*="bg-[#fffaf8]"],
+  .dark [class*="bg-[#fff3ef]"],
+  .dark [class*="bg-[#fdf0eb]"],
+  .dark [class*="bg-stone-100"],
+  .dark [class*="bg-stone-200"] {
     background-color: #2a2d2a !important;
   }
 
@@ -163,6 +172,10 @@
   .dark [class*="text-stone-400"],
   .dark [class*="text-[#68717a]"] {
     color: #a8aaa5 !important;
+  }
+
+  .dark [class*="text-stone-300"] {
+    color: #d6d7d2 !important;
   }
 
   .dark [class*="border-stone-200"],

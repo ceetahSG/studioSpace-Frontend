@@ -69,16 +69,19 @@ export default function EditStudioForm({ studio }: { studio: Studio }) {
       amenities: formData.getAll("amenities"),
       rating: 0.0,
     };
-    console.log("Studio data to be published:", userData);
+    // console.log("Studio data to be published:", userData);
     const token = await getTokenFromClient();
-    const res = await fetch(`http://localhost:5000/studio/${studio._id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/studio/${studio._id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(userData),
       },
-      body: JSON.stringify(userData),
-    });
+    );
     if (!res.ok) {
       if (error && typeof error === "object" && "digest" in error) throw error;
       toastManager.add({
@@ -86,10 +89,10 @@ export default function EditStudioForm({ studio }: { studio: Studio }) {
         description: "The studio could not be updated. Please try again.",
         type: "error",
       });
-      console.error("Error publishing studio:", res);
+      // console.error("Error publishing studio:", res);
       return;
     }
-    console.log("Studio Edited successfully:", await res.json());
+    // console.log("Studio Edited successfully:", await res.json());
     toastManager.add({
       title: "Studio updated",
       description: "Your listing changes have been saved.",

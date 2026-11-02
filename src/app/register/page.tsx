@@ -20,7 +20,7 @@ export default function RegisterPage() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const userData = Object.fromEntries(formData.entries());
-    console.log("Form submitted:", userData);
+    // console.log("Form submitted:", userData);
 
     const { data, error } = await authClient.signUp.email({
       email: userData.email as string,

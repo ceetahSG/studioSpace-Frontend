@@ -5,7 +5,7 @@ import FeatureStudiosCard, {
 } from "@/components/FeatureStudiosCard";
 
 export default async function ExploreStudiosPage() {
-  const res = await fetch("http://localhost:5000/studios");
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/studios`);
   const Studios = await res.json();
 
   <section className="bg-[#f7f5f1] px-6 py-24 lg:px-8 lg:py-32">

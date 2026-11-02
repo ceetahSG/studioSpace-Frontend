@@ -11,9 +11,12 @@ const CancelBooking = ({ bookingId }: CancelBookingProps) => {
   const toastManager = useToastManager();
   const handleCancelBooking = async (bookingId: string) => {
     try {
-      const res = await fetch(`http://localhost:5000/booking/${bookingId}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/booking/${bookingId}`,
+        {
+          method: "DELETE",
+        },
+      );
       if (!res.ok) throw new Error("The booking could not be cancelled.");
       toastManager.add({
         title: "Booking cancelled",
@@ -25,7 +28,8 @@ const CancelBooking = ({ bookingId }: CancelBookingProps) => {
       if (error && typeof error === "object" && "digest" in error) throw error;
       toastManager.add({
         title: "Cancellation failed",
-        description: error instanceof Error ? error.message : "Please try again.",
+        description:
+          error instanceof Error ? error.message : "Please try again.",
         type: "error",
       });
       console.error("Failed to cancel booking:", error);
