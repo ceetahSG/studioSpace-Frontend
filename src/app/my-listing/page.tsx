@@ -11,12 +11,12 @@ type Listing = {
   studioTitle: string;
   category: string;
   description: string;
-  city: "Dhaka";
+  city: string;
   address: string;
   hourlyRate: string;
   securityDeposit: string;
   maximumCapacity: string;
-  imageLink: string;
+  images: string[];
   amenities: string[];
   hostName: string;
   hostEmail: string;
@@ -39,7 +39,8 @@ export default async function MyListingPage() {
     },
   });
   const listings = await res.json();
-  console.log("listings", listings);
+  // console.log("listings", listings[0].images[0]);
+
   return (
     <main className="min-h-screen bg-[#f7f6f2] px-6 py-12 text-[#071a2e] sm:px-8 lg:px-9 lg:py-12">
       <div className="mx-auto max-w-[1214px]">
@@ -111,7 +112,7 @@ export default async function MyListingPage() {
                 >
                   <div className="flex items-center gap-3">
                     <img
-                      src={listing.imageLink}
+                      src={listing.images[0]}
                       alt=""
                       className="h-11 w-14 rounded object-cover"
                     />

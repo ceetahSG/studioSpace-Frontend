@@ -6,6 +6,7 @@ import { authClient } from "@/lib/auth-client";
 import getTokenFromClient from "@/lib/getTokenFromClient";
 import { redirect } from "next/navigation";
 import { useToastManager } from "@/components/ui/toast";
+import { Studio } from "@/app/explore-studios/[id]/page";
 
 const amenities = [
   "High-speed Wi-Fi",
@@ -24,26 +25,26 @@ const inputClass =
 const sectionClass =
   "grid gap-8 border-t border-stone-200 py-10 md:grid-cols-[220px_minmax(0,1fr)] md:gap-10";
 
-export default function EditStudioForm({ studio }: { studio: any }) {
-  const [studioTitle, setStudioTitle] = useState(studio.studioTitle);
+export default function EditStudioForm({ studio }: { studio: Studio }) {
+  const [studioTitle, setStudioTitle] = useState(studio.title);
   const [category, setCategory] = useState(studio.category);
-  const [description, setDescription] = useState(studio.description);
-  const [city, setCity] = useState(studio.city);
+  const [description, setDescription] = useState(studio.overview);
+  const [city, setCity] = useState(studio.location);
   const [address, setAddress] = useState(studio.address);
-  const [hourlyRate, setHourlyRate] = useState(studio.hourlyRate);
+  const [hourlyRate, setHourlyRate] = useState(studio.hourlyRate.toString());
   const [securityDeposit, setSecurityDeposit] = useState(
-    studio.securityDeposit,
+    studio.securityDeposit.toString(),
   );
   const [maximumCapacity, setMaximumCapacity] = useState(
-    studio.maximumCapacity,
+    studio.maxCapacity.toString(),
   );
   const [imageLink, setImageLink] = useState("");
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([
     ...(Array.isArray(studio.amenities) ? studio.amenities : []),
   ]);
   const [rating, setRating] = useState(studio.rating);
-  const [hostName, setHostName] = useState(studio.hostName);
-  const [hostEmail, setHostEmail] = useState(studio.hostEmail);
+  const [hostName, setHostName] = useState(studio.ownerName);
+  const [hostEmail, setHostEmail] = useState(studio.ownerEmail);
   const toastManager = useToastManager();
 
   const toggleAmenity = (amenity: string) => {

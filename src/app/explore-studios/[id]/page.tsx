@@ -14,7 +14,7 @@ import BookingPanel from "@/components/BookingPanel";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
-type Studio = {
+export type Studio = {
   _id: string;
   title: string;
   category: string;
@@ -53,14 +53,14 @@ export default async function StudioDetailsPage({
       rawStudio.overview ||
       rawStudio.description ||
       "No overview is available for this studio.",
-    maxCapacity: Number(rawStudio.maxCapacity ?? rawStudio.maximumCapacity) || 0,
-    ownerName: rawStudio.ownerName || rawStudio.hostName || "Studio host",
-    ownerEmail: rawStudio.ownerEmail || rawStudio.hostEmail || "",
-    images: Array.isArray(rawStudio.images)
-      ? rawStudio.images
-      : rawStudio.imageLink
-        ? [rawStudio.imageLink]
-        : [],
+    maxCapacity:
+      Number(rawStudio.maxCapacity ?? rawStudio.maximumCapacity) || 0,
+    images:
+      Array.isArray(rawStudio.images) && rawStudio.images.length > 0
+        ? rawStudio.images
+        : Array.isArray(rawStudio.imageLink)
+          ? rawStudio.imageLink
+          : [],
     rating: Number(rawStudio.rating) || 0,
     reviewCount: Number(rawStudio.reviewCount) || 0,
   };
