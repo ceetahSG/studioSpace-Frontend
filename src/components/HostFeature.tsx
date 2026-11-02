@@ -54,7 +54,7 @@ export default function HostFeature() {
             ))}
           </ul>
           <Link
-            href="#become-a-host"
+            href="add-studio"
             className="mt-9 inline-flex items-center gap-4 rounded-lg bg-[#df5232] px-5 py-3.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#c9472a]"
           >
             Become a host

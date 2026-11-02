@@ -1,11 +1,16 @@
 "use client";
+import getTokenFromClient from "@/lib/getTokenFromClient";
 import { Trash2 } from "lucide-react";
 import { redirect } from "next/navigation";
 
 const DeleteListing = ({ studioId }: { studioId: string }) => {
   const handleDelete = async () => {
+    const token = await getTokenFromClient();
     const response = await fetch(`http://localhost:5000/studios/${studioId}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (!response.ok) {
       console.error("Failed to delete listing");

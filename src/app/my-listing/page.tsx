@@ -2,6 +2,9 @@ import Link from "next/link";
 import { ArrowRight, CalendarDays } from "lucide-react";
 import DeleteListing from "@/components/DeleteListing";
 import EditListing from "@/components/EditListing";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import getTokenFromServer from "@/lib/getTokenFromServer";
 
 type Listing = {
   _id: string;
@@ -22,8 +25,21 @@ type Listing = {
 };
 
 export default async function MyListingPage() {
-  const res = await fetch("http://localhost:5000/studios/sajim@gmail.com");
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const userData = await session?.user;
+  // console.log("userData", userData?.email);
+
+  const token = await getTokenFromServer();
+
+  const res = await fetch(`http://localhost:5000/studios/${userData?.email}`, {
+    headers: {
+      Authorization: `Bearer ${token.token}`,
+    },
+  });
   const listings = await res.json();
+  console.log("listings", listings);
   return (
     <main className="min-h-screen bg-[#f7f6f2] px-6 py-12 text-[#071a2e] sm:px-8 lg:px-9 lg:py-12">
       <div className="mx-auto max-w-[1214px]">

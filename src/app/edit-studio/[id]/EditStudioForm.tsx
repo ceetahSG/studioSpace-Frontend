@@ -3,6 +3,7 @@ import { type FormEvent, useState } from "react";
 import Link from "next/link";
 import { ArrowUp, Check, ChevronRight, Sparkles, Wifi } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import getTokenFromClient from "@/lib/getTokenFromClient";
 import { redirect } from "next/navigation";
 
 const amenities = [
@@ -66,10 +67,12 @@ export default function EditStudioForm({ studio }: { studio: any }) {
       rating: 0.0,
     };
     console.log("Studio data to be published:", userData);
+    const token = await getTokenFromClient();
     const res = await fetch(`http://localhost:5000/studio/${studio._id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(userData),
     });
