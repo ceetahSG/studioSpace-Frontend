@@ -41,7 +41,7 @@ const BookDialog = ({
   // console.log("img:", selectedStudio.images?.[0]);
   const handleConfirmBooking = async () => {
     try {
-      const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/booking", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/booking`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
