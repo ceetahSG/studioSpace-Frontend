@@ -8,12 +8,13 @@ import { useToastManager } from "@/components/ui/toast";
 const exploreLinks = [
   { label: "All studios", href: "#explore" },
   { label: "Categories", href: "#categories" },
-  { label: "How it works", href: "#how-it-works" },
+  { label: "How it works", href: "/how-it-works" },
   { label: "Gift cards", href: "#gift-cards" },
 ];
 
 const hostLinks = [
   { label: "List your space", href: "#list-your-space" },
+  { label: "About StudioSpace", href: "/about" },
   { label: "Host resources", href: "#host-resources" },
   { label: "Safety", href: "#safety" },
   { label: "Community", href: "#community" },

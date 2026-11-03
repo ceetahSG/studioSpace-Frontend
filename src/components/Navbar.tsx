@@ -6,18 +6,25 @@ import ProfilePopover from "./ProfilePopover";
 import { authClient } from "@/lib/auth-client";
 import { useEffect, useState } from "react";
 import { useToastManager } from "@/components/ui/toast";
+import { usePathname } from "next/navigation";
 
 const navigation = [
   { label: "Home", href: "/" },
   { label: "Explore Studios", href: "/explore-studios" },
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "About Us", href: "#about" },
+  { label: "How It Works", href: "/how-it-works" },
+  { label: "About Us", href: "/about" },
 ];
 
 export default function Navbar() {
   const { data: session, isPending } = authClient.useSession();
   const [isDark, setIsDark] = useState(false);
+  const pathname = usePathname();
+  const [activePath, setActivePath] = useState("");
   const toastManager = useToastManager();
+
+  useEffect(() => {
+    setActivePath(pathname);
+  }, [pathname]);
 
   useEffect(() => {
     const storedTheme = window.localStorage.getItem("theme");
@@ -73,8 +80,11 @@ export default function Navbar() {
               key={item.label}
               href={item.href}
               className={`transition-colors hover:text-stone-900 ${
-                item.href === "/" ? "text-stone-900" : ""
+                activePath === item.href
+                  ? "font-medium text-stone-900"
+                  : ""
               }`}
+              aria-current={activePath === item.href ? "page" : undefined}
             >
               {item.label}
             </Link>

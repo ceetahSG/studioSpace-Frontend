@@ -5,6 +5,7 @@ import EditListing from "@/components/EditListing";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import getTokenFromServer from "@/lib/getTokenFromServer";
+import { redirect } from "next/navigation";
 
 type Listing = {
   _id: string;
@@ -29,9 +30,10 @@ export default async function MyListingPage() {
     headers: await headers(),
   });
   const userData = await session?.user;
-  // console.log("userData", userData?.email);
+  console.log("userData", userData?.email);
 
   const token = await getTokenFromServer();
+  console.log("token", token?.token);
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/studios/${userData?.email}`,

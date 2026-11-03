@@ -32,7 +32,7 @@ export default function AddStudioPage() {
   );
   const [city, setCity] = useState("Dhaka");
   const [address, setAddress] = useState("");
-  const [hourlyRate, setHourlyRate] = useState("45");
+  const [hourlyRate, setHourlyRate] = useState("50");
   const [securityDeposit, setSecurityDeposit] = useState("50");
   const [maximumCapacity, setMaximumCapacity] = useState("12");
   const [imageLinks, setImageLinks] = useState(["", "", "", "", ""]);
