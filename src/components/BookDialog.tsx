@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/dialog";
 import { Info } from "lucide-react";
 import { useToastManager } from "@/components/ui/toast";
+import getTokenFromServer from "@/lib/getTokenFromServer";
+import getTokenFromClient from "@/lib/getTokenFromClient";
 
 interface BookDialogProps {
   open: boolean;
@@ -40,11 +42,14 @@ const BookDialog = ({
   // console.log("Guest Count:", guestCount);
   // console.log("img:", selectedStudio.images?.[0]);
   const handleConfirmBooking = async () => {
+    const token = await getTokenFromClient();
+
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/booking`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           userEmail: user?.email,

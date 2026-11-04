@@ -6,6 +6,7 @@ import { ArrowUp, Check, ChevronRight, Sparkles, Wifi } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
 import { useToastManager } from "@/components/ui/toast";
+import getTokenFromClient from "@/lib/getTokenFromClient";
 
 const amenities = [
   "High-speed Wi-Fi",
@@ -75,11 +76,17 @@ export default function AddStudioPage() {
       status: "Available",
       reviewCount: 0,
     };
+
+    const token = await getTokenFromClient();
     // console.log("Studio data to be published:", userData);
+
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/studios`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(userData),
       });
       if (!res.ok) throw new Error("The studio could not be published.");
