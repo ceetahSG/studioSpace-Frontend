@@ -1,58 +1,130 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# StudioSpace
 
-## Getting Started
+StudioSpace is a peer-to-peer marketplace for discovering, listing, and
+reserving creative workspaces. Creators can browse photography studios, film
+stages, podcast rooms, music suites, and workshops, while hosts can manage
+their own studio listings and booking requests.
 
-First, run the development server:
+**Live site:** https://studio-space-chetah.vercel.app
+**Backend API:** https://studio-space-backend-server.vercel.app
+
+## Features
+
+- Browse featured and available creative studios with category-based discovery.
+- View studio details, pricing, amenities, capacity, location, host
+  information, and booking availability.
+- Register and sign in with email/password or Google OAuth through Better Auth.
+- Hosts can add, edit, and delete their studio listings.
+- Creators can request bookings, view booking status, and cancel pending
+  reservations.
+- Responsive StudioSpace interface with branded loading states, custom
+  notifications, empty states, a custom 404 page, and light/dark themes.
+
+## Tech stack
+
+- Next.js App Router
+- React and TypeScript
+- Better Auth with MongoDB
+- Tailwind CSS
+- Base UI/shadcn-style UI primitives
+- Lucide React icons
+- Express and MongoDB backend API
+- Vercel deployment
+
+## Project structure
+
+```text
+src/
+├── app/                 # App Router pages and the Better Auth route
+├── components/          # Navigation, booking, listing, and UI components
+├── lib/                 # Better Auth and API helpers
+└── proxy.ts             # Private-route session protection
+```
+
+## Local setup
+
+### Prerequisites
+
+- Node.js 20 or newer
+- npm 10 or newer
+- A MongoDB database
+- Google OAuth credentials if Google sign-in is enabled locally
+- A running copy of the StudioSpace backend
+
+### Install and run
 
 ```bash
+git clone https://github.com/ceetahSG/studioSpace-Frontend.git
+cd studioSpace-Frontend
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 in a browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Google sign-in
-
-The authentication server uses Better Auth with MongoDB and Google OAuth. Add
-these variables to `.env.local`:
+Create `.env.local` with values for your environment:
 
 ```env
-MONGODB_URI=mongodb://...
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>/<database>
 BETTER_AUTH_URL=http://localhost:3000
-GOOGLE_CLIENT_ID=...
-GOOGLE_CLIENT_SECRET=...
+NEXT_PUBLIC_AUTH_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=http://localhost:5000
+GOOGLE_CLIENT_ID=<google-oauth-client-id>
+GOOGLE_CLIENT_SECRET=<google-oauth-client-secret>
 ```
 
-In Google Cloud Console, create a Web OAuth client and add this authorized
-redirect URI:
+For Google OAuth, add this redirect URI to the Google Cloud OAuth client:
 
 ```text
 http://localhost:3000/api/auth/callback/google
 ```
 
-For production, use the deployed site URL in `BETTER_AUTH_URL` and add its
-matching `/api/auth/callback/google` redirect URI in Google Cloud Console.
+For production, set `BETTER_AUTH_URL` and `NEXT_PUBLIC_AUTH_URL` to the
+deployed frontend URL and update the Google OAuth redirect URI accordingly.
+Set `NEXT_PUBLIC_API_URL` to the deployed backend URL.
 
-## Learn More
+## Available scripts
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run dev       # Start the development server
+npm run build     # Create a production build
+npm run start     # Serve the production build
+npm run lint      # Run ESLint
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Main routes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Route | Purpose |
+| --- | --- |
+| `/` | Home page and featured studios |
+| `/explore-studios` | Studio directory |
+| `/explore-studios/[id]` | Studio details and booking |
+| `/filteredstudios/[category]` | Category-filtered studios |
+| `/login` | Email/password and Google sign-in |
+| `/register` | Account registration |
+| `/add-studio` | Add a studio listing |
+| `/my-listing` | Manage owned studio listings |
+| `/edit-studio/[id]` | Edit a studio listing |
+| `/my-bookings` | View and cancel bookings |
+| `/how-it-works` | Booking workflow |
+| `/about` | About StudioSpace |
 
-## Deploy on Vercel
+## Examiner access
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+No private credentials are committed to this public repository. An examiner
+can create an account from `/register` using the deployed site, or use Google
+sign-in if OAuth is configured for the deployment. Never commit real
+passwords, OAuth secrets, MongoDB credentials, or API tokens to the repository.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+
+The frontend is configured for deployment on Vercel. Add the environment
+variables above in the Vercel project settings, deploy the `main` branch, and
+verify that the backend URL and Google OAuth callback URL point to the
+production services.
+
+## Related repository
+
+- Backend API: https://github.com/ceetahSG/studio-space-backend
