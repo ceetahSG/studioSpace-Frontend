@@ -5,7 +5,7 @@ reserving creative workspaces. Creators can browse photography studios, film
 stages, podcast rooms, music suites, and workshops, while hosts can manage
 their own studio listings and booking requests.
 
-**Live site:** https://studio-space-chetah.vercel.app
+**Live site:** https://studio-space-xi-umber.vercel.app/
 **Backend API:** https://studio-space-backend-server.vercel.app
 
 ## Features
